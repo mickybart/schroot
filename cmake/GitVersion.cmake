@@ -1,0 +1,6 @@
+set(GIT_RELEASE_PACKAGE "schroot")
+set(GIT_RELEASE_VERSION "1.6.10")
+set(GIT_RELEASE_DATE "05 May 2014")
+set(GIT_RELEASE_DATE_UNIX "1399244400")
+set(GIT_RELEASE_BY "Roger Leigh <rleigh@codelibre.net>")
+set(GIT_RELEASE_TAG "release/schroot-1.6.10")

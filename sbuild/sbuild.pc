@@ -1,0 +1,11 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: Sbuild
+Description: Debian Source Builder
+Version: @sbuild_version@
+Libs: -L${libdir} -lsbuild
+Libs.private: -luuid -lpam  -lboost_program_options -lboost_regex -lboost_iostreams -lboost_iostreams 
+Cflags: -I${includedir}
