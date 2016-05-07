@@ -213,6 +213,7 @@ session::session (std::string const&  service,
   termios_ok(false),
   verbosity(),
   preserve_environment(false),
+  android_environment(false),
   shell(),
   user_options(),
   cwd(sbuild::getcwd())
@@ -293,6 +294,35 @@ void
 session::set_preserve_environment (bool preserve_environment)
 {
   this->preserve_environment = preserve_environment;
+}
+
+bool
+session::get_android_environment () const
+{
+  return this->android_environment;
+}
+
+void
+session::set_android_environment (bool android_environment)
+{
+  this->android_environment = android_environment;
+}
+
+void
+session::setup_android_env (environment &env)
+{
+    /* We need to disable env filter to be sure that
+     * LD_.* will not be filtered (LD_.* is part of the default filter)
+     */ 
+    env.use_filter(false);
+    
+    env.add("ANDROID_ROOT", "/system");
+    env.add("LD_PRELOAD", "/system/lib/libc.so"); //for glibc-bionic compatibility
+    env.add("LD_LIBRARY_PATH", "/system/lib:/vendor/lib");
+    env.add("PATH", "/sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin");
+    env.add("PS1", "(android)[\\u@\\h \\W]\\$ ");
+    
+    env.use_filter(true);
 }
 
 std::string const&
@@ -789,6 +819,12 @@ session::get_login_directories (sbuild::chroot::ptr& session_chroot,
                                 environment const&   env) const
 {
   string_list ret;
+  
+  if (get_android_environment() || session_chroot->get_android_environment()) {
+      //Always use / for android because it is not compliant with FHS
+      ret.push_back("/");
+      return ret;
+  }
 
   std::string const& wd(this->authstat->get_wd());
   if (!wd.empty())
@@ -824,6 +860,12 @@ session::get_command_directories (sbuild::chroot::ptr& session_chroot,
                                   environment const&   env) const
 {
   string_list ret;
+  
+  if (get_android_environment() || session_chroot->get_android_environment()) {
+      //Always use / for android because it is not compliant with FHS
+      ret.push_back("/");
+      return ret;
+  }
 
   std::string const& wd(this->authstat->get_wd());
   if (!wd.empty())
@@ -1257,6 +1299,10 @@ session::run_child (sbuild::chroot::ptr& session_chroot)
     env += this->authstat->get_complete_environment();
   else
     env += this->authstat->get_auth_environment();
+  
+  /* Environment for Android ? */
+  if (get_android_environment() || session_chroot->get_android_environment())
+    setup_android_env(env);
 
   // Store before chroot call.
   this->cwd = sbuild::getcwd();

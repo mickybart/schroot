@@ -114,6 +114,7 @@ sbuild::chroot::chroot ():
   root_groups(),
   aliases(),
   preserve_environment(false),
+  android_environment(false),
   default_shell(),
   environment_filter(SBUILD_DEFAULT_ENVIRONMENT_FILTER),
   mount_location(),
@@ -142,6 +143,7 @@ sbuild::chroot::chroot (const chroot& rhs):
   root_groups(rhs.root_groups),
   aliases(rhs.aliases),
   preserve_environment(rhs.preserve_environment),
+  android_environment(rhs.android_environment),
   default_shell(rhs.default_shell),
   environment_filter(rhs.environment_filter),
   mount_location(rhs.mount_location),
@@ -354,6 +356,18 @@ void
 sbuild::chroot::set_preserve_environment (bool preserve_environment)
 {
   this->preserve_environment = preserve_environment;
+}
+
+bool
+sbuild::chroot::get_android_environment () const
+{
+  return this->android_environment;
+}
+
+void
+sbuild::chroot::set_android_environment (bool android_environment)
+{
+  this->android_environment = android_environment;
 }
 
 std::string const&
@@ -678,6 +692,7 @@ sbuild::chroot::get_details (chroot const&  chroot,
     .add(_("Root Groups"), chroot.get_root_groups())
     .add(_("Aliases"), chroot.get_aliases())
     .add(_("Preserve Environment"), chroot.get_preserve_environment())
+    .add(_("Android Environment"), chroot.get_android_environment())
     .add(_("Default Shell"), chroot.get_default_shell())
     .add(_("Environment Filter"), chroot.get_environment_filter())
     .add(_("Run Setup Scripts"), chroot.get_run_setup_scripts())
@@ -800,6 +815,10 @@ sbuild::chroot::get_keyfile (chroot const& chroot,
   keyfile::set_object_value(chroot, &chroot::get_preserve_environment,
                             keyfile, chroot.get_name(),
                             "preserve-environment");
+  
+  keyfile::set_object_value(chroot, &chroot::get_android_environment,
+                            keyfile, chroot.get_name(),
+                            "android-environment");
 
   keyfile::set_object_value(chroot, &chroot::get_default_shell,
                             keyfile, chroot.get_name(),
@@ -1032,6 +1051,12 @@ sbuild::chroot::set_keyfile (chroot&        chroot,
                             "preserve-environment",
                             keyfile::PRIORITY_OPTIONAL);
   used_keys.push_back("preserve-environment");
+  
+  keyfile::get_object_value(chroot, &chroot::set_android_environment,
+                            keyfile, chroot.get_name(),
+                            "android-environment",
+                            keyfile::PRIORITY_OPTIONAL);
+  used_keys.push_back("android-environment");
 
   keyfile::get_object_value(chroot, &chroot::set_default_shell,
                             keyfile, chroot.get_name(),

@@ -369,6 +369,7 @@ main_base::run_impl ()
       if (!this->options->shell.empty())
         this->session->set_shell_override(this->options->shell);
       this->session->set_preserve_environment(this->options->preserve);
+      this->session->set_android_environment(this->options->android);
       this->session->set_session_id(this->options->session_name);
       this->session->set_force(this->options->session_force);
       if (this->options->quiet)

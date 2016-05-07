@@ -53,6 +53,7 @@ options_base::options_base ():
   shell(),
   user(),
   preserve(false),
+  android(false),
   all(false),
   all_chroots(false),
   all_sessions(false),

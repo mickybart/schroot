@@ -56,6 +56,12 @@ session::get_login_directories (sbuild::chroot::ptr&       session_chroot,
                                 sbuild::environment const& env) const
 {
   sbuild::string_list ret;
+  
+  if (get_android_environment() || session_chroot->get_android_environment()) {
+      //Always use / for android because it is not compliant with FHS
+      ret.push_back("/");
+      return ret;
+  }
 
   std::string const& wd(get_auth()->get_wd());
   if (!wd.empty())

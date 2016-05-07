@@ -59,7 +59,9 @@ options::add_options ()
     ("directory", opt::value<std::string>(&this->directory),
      _("Directory to use"))
     ("preserve-environment,d",
-     _("Preserve user environment"));
+     _("Preserve user environment"))
+    ("android-environment,g",
+     _("Set Android environment"));
 }
 
 void
@@ -84,6 +86,8 @@ options::check_options ()
 
   if (vm.count("preserve-environment"))
     this->preserve = true;
+  if (vm.count("android-environment"))
+    this->android = true;
 
   if (this->quiet && this->verbose)
     {

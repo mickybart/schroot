@@ -323,6 +323,22 @@ namespace sbuild
      */
     void
     set_preserve_environment (bool preserve_environment);
+    
+    /**
+     * Check if the Android environment should be set in the chroot.
+     *
+     * @returns true to set or false if not.
+     */
+    bool
+    get_android_environment () const;
+
+    /**
+     * Set if the Android environment should be set in the chroot.
+     *
+     * @param android_environment true to set or false if not.
+     */
+    void
+    set_android_environment (bool android_environment);
 
     /**
      * Get default shell.
@@ -809,6 +825,8 @@ namespace sbuild
     string_list   aliases;
     /// Preserve environment?
     bool          preserve_environment;
+    /// Android environment?
+    bool          android_environment;
     /// Default shell
     std::string   default_shell;
     /// Environment filter regex.

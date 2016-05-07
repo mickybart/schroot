@@ -92,6 +92,8 @@ namespace schroot
     std::string          user;
     /// Preserve environment.
     bool                 preserve;
+    /// Android environment.
+    bool                 android;
     /// Use all chroots and sessions.
     bool                 all;
     /// Use all chroots.

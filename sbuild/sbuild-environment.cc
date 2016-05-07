@@ -27,12 +27,14 @@ using namespace sbuild;
 
 environment::environment ():
   std::map<std::string,std::string>(),
-  filter()
+  filter(),
+  filter_off(false)
 {
 }
 
 environment::environment (char **environment):
-  std::map<std::string,std::string>()
+  std::map<std::string,std::string>(),
+  filter_off(false)
 {
   add(environment);
 }
@@ -51,6 +53,12 @@ regex const&
 environment::get_filter () const
 {
   return this->filter;
+}
+
+void
+environment::use_filter (bool on)
+{
+  filter_off = !on;
 }
 
 void
@@ -96,7 +104,8 @@ environment::add (value_type const& value)
   remove(value);
   if (!value.first.empty() && !value.second.empty())
     {
-      if (this->filter.str().empty() ||
+      if (this->filter_off || 
+          this->filter.str().empty() ||
           !regex_search(value.first, this->filter))
         {
           insert(value);

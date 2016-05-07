@@ -33,6 +33,7 @@ schroot \- securely enter a chroot environment
 .RB [ "\-d \fIdirectory\fP" \[or] "\-\-directory=\fIdirectory\fP" ]
 .RB [ "\-u \fIuser\fP" \[or] "\-\-user=\fIuser\fP" ]
 .RB [ \-p \[or] \-\-preserve\-environment ]
+.RB [ \-g \[or] \-\-android\-environment ]
 .RB [ "\-s \fIshell\fP" \[or] "\-\-shell=\fIshell\fP" ]
 .RB [ \-q \[or] \-\-quiet " \[or] " \-v \[or] \-\-verbose ]
 .RB [ "\-c \fIchroot\fP" \[or] "\-\-chroot=\fIchroot\fP"
@@ -202,6 +203,12 @@ Preserve the user's environment inside the chroot environment.  The default is
 to use a clean environment; this option copies the entire user environment and
 sets it in the session.  The environment variables allowed are subject to
 certain restrictions; see the section \[lq]\fIEnvironment\fP\[rq], below.
+.TP
+.BR \-g ", " \-\-android\-environment
+Set Android environment (eg: init.environ.rc) inside the chroot environment.
+This option will set ANDROID_ROOT, LD_LIBRARY_PATH, PATH, LD_PRELOAD and PS1.
+Override same defined variables if \fI\-\-preserve\-environment\fP is used.
+HOME of the user will be override to root as Android doesn't follow LHS.
 .TP
 .BR \-s ", " \-\-shell=\fIshell\fP
 Use \fIshell\fP as the login shell.  When running a login shell a number of

@@ -219,6 +219,14 @@ environment.  This is useful for example when running X applications inside the
 chroot, which need the environment to function correctly.  The environment may
 also be preserved using the \fI\-\-preserve\-environment\fP option.
 .TP
+\f[CBI]android\-environment=\fP\f[CI]true\fP|\f[CI]false\fP
+Set to \f[CI]true\fP to export Android environment inside the chroot. That will
+permit to define ANDROID_ROOT, LD_LIBRARY_PATH, PATH, LD_PRELOAD and PS1 for 
+Android in a similar way that is done on Android init by init.environ.rc file.
+The home of the user will always be set to root as Android doesn't follow LHS.
+Those variables are hard defined so you can safely use in same time
+\fI\-\-environment\-filter\fP and \fI\-\-preserve\-environment\fP if needed.
+.TP
 \f[CBI]shell=\fP\f[CI]shell\fP
 When running a login shell a number of potential shells will be considered, in
 this order: the command in the SHELL environment variable (if

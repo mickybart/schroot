@@ -73,6 +73,14 @@ namespace sbuild
      */
     regex const&
     get_filter () const;
+    
+    /**
+     * Enable/disable filter
+     * 
+     * @param on enable if true, disable if false
+     */
+    void
+    use_filter (bool on);
 
     /**
      * Add environment variables.  Any existing variables sharing the
@@ -313,6 +321,8 @@ namespace sbuild
   private:
     /// Filter regex.
     regex filter;
+    /// Enable/Disable filter
+    bool filter_off;
   };
 
 }

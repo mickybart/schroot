@@ -72,6 +72,8 @@ options::add_options ()
      _("Username (default current user)"))
     ("preserve-environment,p",
      _("Preserve user environment"))
+    ("android-environment,g",
+     _("Set Android environment"))
     ("option,o", opt::value<sbuild::string_list>(&this->useroptions),
      _("Set option"));
 
@@ -117,6 +119,8 @@ options::check_options ()
 
   if (vm.count("preserve-environment"))
     this->preserve = true;
+  if (vm.count("android-environment"))
+    this->android = true;
 
   if (vm.count("automatic-session"))
     this->action = ACTION_SESSION_AUTO;
